@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import type { ReactNode } from "react";
 import { Badge, Container, Heading } from "@/components/atoms";
 import { ADSENSE_CLIENT, CONTACT_EMAIL } from "@/constants";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Kebijakan Privasi",
-  description: "Bagaimana VektorAha memproses foto, data analitik, dan iklan.",
-};
+  description:
+    "Bagaimana VektorAha memproses foto, data analitik, dan iklan.",
+  path: "/kebijakan-privasi",
+});
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (

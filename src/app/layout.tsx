@@ -3,7 +3,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { MainTemplate } from "@/components/templates";
-import { ADSENSE_CLIENT, GA_MEASUREMENT_ID } from "@/constants";
+import { ADSENSE_CLIENT, APP_NAME, GA_MEASUREMENT_ID } from "@/constants";
+import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 // Self-hosted variable fonts (no runtime request to Google Fonts).
@@ -22,12 +23,33 @@ const body = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: APP_NAME,
   title: {
-    default: "VektorAha — Edit foto jadi anime & pasfoto studio",
+    default: "VektorAha — Pasfoto Online & Ubah Foto Jadi Anime dengan AI",
     template: "%s · VektorAha",
   },
-  description:
-    "Ubah foto jadi karakter anime atau pasfoto studio profesional untuk lamaran kerja. Latar merah/biru, ukuran 2×3, 3×4, 4×6.",
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: APP_NAME,
+    url: "/",
+    title: "VektorAha — Pasfoto Online & Ubah Foto Jadi Anime dengan AI",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "VektorAha — Pasfoto Online & Ubah Foto Jadi Anime dengan AI",
+    description: SITE_DESCRIPTION,
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+  formatDetection: { telephone: false },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION } }
+    : {}),
   // Lets AdSense verify site ownership during review.
   ...(ADSENSE_CLIENT ? { other: { "google-adsense-account": ADSENSE_CLIENT } } : {}),
 };

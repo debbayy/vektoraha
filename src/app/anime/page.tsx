@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { AdSlot } from "@/components/atoms";
 import { AnimeEditor } from "@/components/organisms";
 import { EditorTemplate } from "@/components/templates";
 import { AD_SLOTS } from "@/constants";
 
-export const metadata: Metadata = {
-  title: "Gaya Anime",
-  description: "Ubah fotomu jadi karakter anime: ninja shonen, cat air, aksi 90-an, shoujo, cyber, dan chibi.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Ubah Foto Jadi Anime dengan AI",
+  description:
+    "Ubah fotomu jadi karakter anime dengan AI: gaya ninja shonen, lukisan cat air, aksi 90-an, shoujo, cyberpunk, dan chibi. Gratis, wajah tetap mirip.",
+  path: "/anime",
+  keywords: ["ubah foto jadi anime","foto anime AI","foto jadi kartun","anime filter online","edit foto anime gratis"],
+});
 
 export default function AnimePage() {
   return (

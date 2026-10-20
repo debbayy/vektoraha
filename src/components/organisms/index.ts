@@ -7,3 +7,4 @@ export { Navbar } from "./Navbar";
 export { PasfotoEditor } from "./PasfotoEditor";
 export { ResultPanel } from "./ResultPanel";
 export { StyleShowcase } from "./StyleShowcase";
+export { FaqSection } from "./FaqSection";

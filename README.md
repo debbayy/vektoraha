@@ -90,6 +90,12 @@ src/
 | `GEMINI_IMAGE_MODEL` | No | Override the Gemini image model |
 | `OPENAI_API_KEY` | If using OpenAI | OpenAI API key (also set `AI_PROVIDER=openai`) |
 | `OPENAI_IMAGE_MODEL` | No | Override the OpenAI image model |
+| `NEXT_PUBLIC_SITE_URL` | No | Canonical site URL for SEO (default `https://vektoraha.vercel.app`) |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | No | Google Search Console HTML-tag verification code |
+| `NEXT_PUBLIC_GA_ID` | No | Override the GA4 measurement ID |
+| `NEXT_PUBLIC_ADSENSE_CLIENT` | No | AdSense publisher ID (`ca-pub-…`). Ads and `/ads.txt` stay off while empty |
+| `NEXT_PUBLIC_ADSENSE_SLOT_HOME` / `_EDITOR` | No | Ad unit IDs for the home page and editor pages |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | No | Contact email shown on the privacy page |
 
 AI prompts live on the server (`src/lib/ai/prompts.ts`), so the client only sends a style ID. The API cannot be used for free-form prompts.
 
