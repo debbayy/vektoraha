@@ -17,6 +17,7 @@ import {
   fileToDataUrl,
   type PixelArea,
 } from "@/lib/image";
+import { validatePhoto } from "@/lib/validation/client";
 import type { OutfitId } from "@/types";
 
 type Phase = "idle" | "ai" | "cutout" | "ready" | "error";
@@ -30,6 +31,8 @@ const AI_MESSAGES = [
 
 export function PasfotoEditor() {
   const [source, setSource] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [useAI, setUseAI] = useState(true);
   const [outfitId, setOutfitId] = useState<OutfitId>("white-shirt");
   const [bgId, setBgId] = useState("red");
@@ -67,11 +70,27 @@ export function PasfotoEditor() {
   useEffect(() => () => void (cutout && URL.revokeObjectURL(cutout)), [cutout]);
 
   const onFile = useCallback(async (file: File) => {
-    setSource(await fileToDataUrl(file, 2048, 0.92));
+    setChecking(true);
+    setUploadError(null);
     setCutout(null);
     setComposite(null);
     setPhase("idle");
     setError(null);
+    try {
+      const dataUrl = await fileToDataUrl(file, 2048, 0.92);
+      const invalid = await validatePhoto(dataUrl, { faces: "one" });
+      if (invalid) {
+        setUploadError(invalid);
+        setSource(null);
+        return;
+      }
+      setSource(dataUrl);
+    } catch {
+      setUploadError("Foto tidak bisa dibaca. Coba file lain.");
+      setSource(null);
+    } finally {
+      setChecking(false);
+    }
   }, []);
 
   const process = async () => {
@@ -123,6 +142,8 @@ export function PasfotoEditor() {
           <FileDropzone
             preview={source}
             onFile={onFile}
+            checking={checking}
+            externalError={uploadError}
             hint="Foto setengah badan dengan cahaya cukup"
             aspect="aspect-[4/3] sm:aspect-[16/10]"
           />
@@ -194,7 +215,7 @@ export function PasfotoEditor() {
             size="lg"
             fullWidth
             onClick={process}
-            disabled={!source}
+            disabled={!source || checking}
             loading={busy}
             icon={<Wand2 className="size-5" />}
           >

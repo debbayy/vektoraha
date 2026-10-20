@@ -7,6 +7,7 @@ import { Alert, FileDropzone, StyleCard } from "@/components/molecules";
 import { ANIME_STYLES } from "@/constants";
 import { useGenerate } from "@/hooks/useGenerate";
 import { downloadDataUrl, fileToDataUrl } from "@/lib/image";
+import { validatePhoto } from "@/lib/validation/client";
 import type { AnimeStyleId } from "@/types";
 import { ResultPanel } from "./ResultPanel";
 
@@ -22,15 +23,27 @@ export function AnimeEditor() {
   const [source, setSource] = useState<string | null>(null);
   const [styleId, setStyleId] = useState<AnimeStyleId>("ninja-shonen");
   const [reading, setReading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const { status, result, error, generate, reset, isLoading } = useGenerate();
   const resultRef = useRef<HTMLDivElement>(null);
 
   const onFile = useCallback(
     async (file: File) => {
       setReading(true);
+      setUploadError(null);
       reset();
       try {
-        setSource(await fileToDataUrl(file));
+        const dataUrl = await fileToDataUrl(file);
+        const invalid = await validatePhoto(dataUrl, { faces: "any" });
+        if (invalid) {
+          setUploadError(invalid);
+          setSource(null);
+          return;
+        }
+        setSource(dataUrl);
+      } catch {
+        setUploadError("Foto tidak bisa dibaca. Coba file lain.");
+        setSource(null);
       } finally {
         setReading(false);
       }
@@ -61,6 +74,8 @@ export function AnimeEditor() {
           <FileDropzone
             preview={source}
             onFile={onFile}
+            checking={reading}
+            externalError={uploadError}
             hint="Wajah terlihat jelas hasilnya paling bagus"
             aspect="aspect-[4/3] sm:aspect-[16/10]"
           />

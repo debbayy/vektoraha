@@ -1,6 +1,6 @@
 "use client";
 
-import { ImagePlus, RefreshCw } from "lucide-react";
+import { ImagePlus, Loader2, RefreshCw } from "lucide-react";
 import { useCallback, useId, useRef, useState } from "react";
 import { MAX_UPLOAD_MB } from "@/constants";
 import { cn } from "@/lib/cn";
@@ -11,9 +11,21 @@ interface FileDropzoneProps {
   hint?: string;
   className?: string;
   aspect?: string;
+  /** Error coming from validation outside the dropzone (e.g. no face detected) */
+  externalError?: string | null;
+  /** Shows a checking overlay while the photo is being validated */
+  checking?: boolean;
 }
 
-export function FileDropzone({ preview, onFile, hint, className, aspect = "aspect-[4/5]" }: FileDropzoneProps) {
+export function FileDropzone({
+  preview,
+  onFile,
+  hint,
+  className,
+  aspect = "aspect-[4/5]",
+  externalError,
+  checking,
+}: FileDropzoneProps) {
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
@@ -71,6 +83,12 @@ export function FileDropzone({ preview, onFile, hint, className, aspect = "aspec
             {hint && <span className="text-xs text-ink-muted">{hint}</span>}
           </div>
         )}
+        {checking && (
+          <span className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-paper/85 text-sm font-semibold text-ink backdrop-blur-sm">
+            <Loader2 className="size-6 animate-spin text-accent" />
+            Memeriksa foto…
+          </span>
+        )}
         <input
           ref={inputRef}
           id={inputId}
@@ -83,7 +101,11 @@ export function FileDropzone({ preview, onFile, hint, className, aspect = "aspec
           }}
         />
       </label>
-      {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+      {(error || externalError) && (
+        <p role="alert" className="mt-2 text-sm font-medium text-danger">
+          {error || externalError}
+        </p>
+      )}
     </div>
   );
 }

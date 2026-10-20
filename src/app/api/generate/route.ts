@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { ANIME_STYLES, BACKGROUND_COLORS, OUTFITS } from "@/constants";
 import { buildAnimePrompt, buildPasfotoPrompt } from "@/lib/ai/prompts";
-import { AIConfigError, generateImage } from "@/lib/ai/providers";
+import { AIConfigError, generateImage, parseDataUrl } from "@/lib/ai/providers";
+import { validateImageOnServer } from "@/lib/validation/server";
 import type { GenerateRequest, GenerateResponse } from "@/types";
 
 export const maxDuration = 60;
@@ -21,6 +22,17 @@ export async function POST(req: Request) {
       { error: "Gambar kosong atau terlalu besar." },
       { status: 400 },
     );
+  }
+
+  let base64: string;
+  try {
+    base64 = parseDataUrl(body.image).base64;
+  } catch (err) {
+    return NextResponse.json<GenerateResponse>({ error: (err as Error).message }, { status: 400 });
+  }
+  const invalid = await validateImageOnServer(base64);
+  if (invalid) {
+    return NextResponse.json<GenerateResponse>({ error: invalid }, { status: 422 });
   }
 
   let prompt: string;
