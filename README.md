@@ -1,20 +1,38 @@
 # VektorAha
 
-Web edit foto bertenaga AI, dibangun dengan **Next.js 16 (App Router)**, **TypeScript**, dan **Tailwind CSS v4**.
+AI-powered photo editing web app built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tailwind CSS v4**.
 
-## Fitur
+## Features
 
-- **Gaya Anime** (`/anime`) — ubah foto jadi ilustrasi anime dengan 6 gaya: Ninja Shonen (terinspirasi Naruto), Watercolor Studio (terinspirasi Ghibli), Saiyan Action (terinspirasi Dragon Ball), Shoujo Sparkle, Cyber Anime, Chibi. Ada slider sebelum/sesudah dan tombol unduh.
-- **Pasfoto Studio** (`/pasfoto`)
-  - Mode *Studio AI*: ganti baju (kemeja putih, jas, blazer, batik), cahaya studio, latar polos.
-  - Mode *Hapus latar saja*: wajah & baju 100% asli, latar dihapus langsung di browser (`@imgly/background-removal`).
-  - Warna latar merah / biru / putih / abu (bisa diganti tanpa proses ulang).
-  - Ukuran 2×3, 3×4, 4×6, 3,5×4,5 (paspor/visa), 1:1 — ekspor 300 dpi.
-  - Crop & zoom, unduh satuan atau **lembar cetak 4R**.
-- Skeleton loading per halaman (`loading.tsx`) dan saat AI memproses.
-- Responsive (mobile menu, layout editor 1 kolom di HP, 2 kolom di desktop).
+### Anime Style (`/anime`)
 
-## Struktur (Atomic Design)
+Turn a photo into an anime illustration in one of 6 styles:
+
+| Style | Inspired by |
+| --- | --- |
+| Ninja Shonen | Naruto |
+| Watercolor Studio | Ghibli |
+| Saiyan Action | Dragon Ball |
+| Shoujo Sparkle | — |
+| Cyber Anime | — |
+| Chibi | — |
+
+Includes a before/after comparison slider and a download button.
+
+### Passport Photo Studio (`/pasfoto`)
+
+- **Studio AI mode**: change clothing (white shirt, suit, blazer, batik), apply studio lighting, plain background.
+- **Background removal only**: your face and clothes stay 100% original; the background is removed directly in the browser (`@imgly/background-removal`).
+- **Background colors**: red, blue, white, or gray. Switch colors without reprocessing.
+- **Sizes**: 2×3, 3×4, 4×6, 3.5×4.5 (passport/visa), and 1:1, exported at 300 dpi.
+- **Crop & zoom**, download a single photo or a **4R print sheet**.
+
+### General
+
+- Skeleton loading for each page (`loading.tsx`) and while the AI is processing.
+- Responsive layout: mobile menu, single-column editor on phones, two columns on desktop.
+
+## Project Structure (Atomic Design)
 
 ```
 src/
@@ -24,25 +42,57 @@ src/
 │  ├─ molecules/        # FileDropzone, StyleCard, OptionChip, ColorSwatch, CompareSlider, ...
 │  ├─ organisms/        # Navbar, Footer, Hero, AnimeEditor, PasfotoEditor, ResultPanel, ...
 │  └─ templates/        # MainTemplate, EditorTemplate, EditorSkeleton, LandingSkeleton
-├─ constants/           # daftar gaya, ukuran, warna, outfit
+├─ constants/           # styles, sizes, colors, outfits
 ├─ hooks/               # useGenerate, useBackgroundRemoval
-├─ lib/                 # image utils (crop, 300dpi, print sheet), AI provider & prompt
+├─ lib/                 # image utils (crop, 300 dpi, print sheet), AI provider & prompts
 └─ types/
 ```
 
-## Menjalankan
+## Getting Started
 
-```bash
-cp .env.example .env.local   # isi GEMINI_API_KEY (atau OPENAI_API_KEY + AI_PROVIDER=openai)
-npm install
-npm run dev
-```
+1. Install dependencies:
 
-Prompt AI ada di server (`src/lib/ai/prompts.ts`), jadi client hanya mengirim ID gaya — API tidak bisa dipakai untuk prompt bebas.
+   ```bash
+   npm install
+   ```
 
-## Deploy ke Vercel
+2. Create `.env.local` in the project root (see [Environment Variables](#environment-variables)):
 
-Import repo di Vercel, tambahkan env `GEMINI_API_KEY` (dan `AI_PROVIDER` bila perlu), lalu deploy.
+   ```bash
+   GEMINI_API_KEY=your-key
+   ```
 
-> Catatan: gaya di aplikasi ini hanya *terinspirasi* karya populer dan tidak berafiliasi dengan pemegang hak cipta. Prompt sengaja mendeskripsikan ciri visual, bukan meniru karakter tertentu.
-# vektoraha
+3. Start the dev server and open <http://localhost:3000>:
+
+   ```bash
+   npm run dev
+   ```
+
+### Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Build for production |
+| `npm run start` | Run the production build |
+| `npm run lint` | Lint with ESLint |
+
+## Environment Variables
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `AI_PROVIDER` | No | AI provider to use (`gemini` or `openai`) |
+| `GEMINI_API_KEY` | If using Gemini | Google Gemini API key |
+| `GEMINI_IMAGE_MODEL` | No | Override the Gemini image model |
+| `OPENAI_API_KEY` | If using OpenAI | OpenAI API key (also set `AI_PROVIDER=openai`) |
+| `OPENAI_IMAGE_MODEL` | No | Override the OpenAI image model |
+
+AI prompts live on the server (`src/lib/ai/prompts.ts`), so the client only sends a style ID. The API cannot be used for free-form prompts.
+
+## Deploy to Vercel
+
+Import the repo in Vercel, add the `GEMINI_API_KEY` env variable (and `AI_PROVIDER` if needed), then deploy.
+
+## Disclaimer
+
+The styles in this app are only *inspired by* popular works and are not affiliated with any copyright holder. Prompts deliberately describe visual traits rather than imitating specific characters.
