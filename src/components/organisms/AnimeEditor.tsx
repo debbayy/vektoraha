@@ -7,6 +7,7 @@ import { Alert, FileDropzone, StyleCard } from "@/components/molecules";
 import { ANIME_STYLES } from "@/constants";
 import { useGenerate } from "@/hooks/useGenerate";
 import { downloadDataUrl, fileToDataUrl } from "@/lib/image";
+import { trackEvent } from "@/lib/analytics";
 import { validatePhoto } from "@/lib/validation/client";
 import type { AnimeStyleId } from "@/types";
 import { ResultPanel } from "./ResultPanel";
@@ -37,6 +38,7 @@ export function AnimeEditor() {
         const invalid = await validatePhoto(dataUrl, { faces: "any" });
         if (invalid) {
           setUploadError(invalid);
+          trackEvent("photo_rejected", { tool: "anime", reason: invalid.slice(0, 90) });
           setSource(null);
           return;
         }
@@ -54,7 +56,9 @@ export function AnimeEditor() {
   const onGenerate = async () => {
     if (!source) return;
     if (window.innerWidth < 1024) resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    await generate({ mode: "anime", styleId, image: source });
+    trackEvent("generate_start", { tool: "anime", style: styleId });
+    const out = await generate({ mode: "anime", styleId, image: source });
+    trackEvent(out ? "generate_success" : "generate_error", { tool: "anime", style: styleId });
   };
 
   useEffect(() => {
@@ -125,7 +129,10 @@ export function AnimeEditor() {
                 <Button
                   variant="dark"
                   icon={<Download className="size-4" />}
-                  onClick={() => downloadDataUrl(result, `vektoraha-${styleId}.png`)}
+                  onClick={() => {
+                    downloadDataUrl(result, `vektoraha-${styleId}.png`);
+                    trackEvent("download", { tool: "anime", style: styleId });
+                  }}
                 >
                   Unduh
                 </Button>

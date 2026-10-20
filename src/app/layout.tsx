@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import localFont from "next/font/local";
 import { MainTemplate } from "@/components/templates";
+import { GA_MEASUREMENT_ID } from "@/constants";
 import "./globals.css";
 
 // Self-hosted variable fonts (no runtime request to Google Fonts).
@@ -37,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <MainTemplate>{children}</MainTemplate>
       </body>
+      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
     </html>
   );
 }

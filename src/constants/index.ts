@@ -2,6 +2,9 @@ import type { AnimeStyle, BackgroundColor, Outfit, PhotoSize } from "@/types";
 
 export const APP_NAME = "VektorAha";
 
+/** GA4 measurement ID (public by design). Override with NEXT_PUBLIC_GA_ID. */
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-HYTSFKQQBM";
+
 export const NAV_LINKS = [
   { href: "/", label: "Beranda" },
   { href: "/anime", label: "Gaya Anime" },

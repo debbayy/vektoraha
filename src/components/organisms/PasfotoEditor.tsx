@@ -17,6 +17,7 @@ import {
   fileToDataUrl,
   type PixelArea,
 } from "@/lib/image";
+import { trackEvent } from "@/lib/analytics";
 import { validatePhoto } from "@/lib/validation/client";
 import type { OutfitId } from "@/types";
 
@@ -81,6 +82,7 @@ export function PasfotoEditor() {
       const invalid = await validatePhoto(dataUrl, { faces: "one" });
       if (invalid) {
         setUploadError(invalid);
+        trackEvent("photo_rejected", { tool: "pasfoto", reason: invalid.slice(0, 90) });
         setSource(null);
         return;
       }
@@ -98,6 +100,7 @@ export function PasfotoEditor() {
     setError(null);
     if (window.innerWidth < 1024) resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
+    trackEvent("generate_start", { tool: "pasfoto", mode: useAI ? "ai" : "bg_only" });
     try {
       let base = source;
       if (useAI) {
@@ -112,9 +115,11 @@ export function PasfotoEditor() {
       setCrop({ x: 0, y: 0 });
       setZoom(1);
       setPhase("ready");
+      trackEvent("generate_success", { tool: "pasfoto", mode: useAI ? "ai" : "bg_only", outfit: outfitId });
     } catch (err) {
       setError((err as Error).message || "Terjadi kesalahan.");
       setPhase("error");
+      trackEvent("generate_error", { tool: "pasfoto", mode: useAI ? "ai" : "bg_only" });
     }
   };
 
@@ -124,6 +129,7 @@ export function PasfotoEditor() {
     try {
       const photo = await cropToSize(composite, area, size, bg.hex);
       const name = `pasfoto-${size.id}-${bg.id}`;
+      trackEvent("download", { tool: "pasfoto", size: size.id, background: bg.id, kind });
       if (kind === "single") downloadCanvas(photo, `${name}.jpg`);
       else downloadCanvas(buildPrintSheet(photo, size), `${name}-lembar-4R.jpg`);
     } finally {
