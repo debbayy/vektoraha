@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { MainTemplate } from "@/components/templates";
-import { GA_MEASUREMENT_ID } from "@/constants";
+import { ADSENSE_CLIENT, GA_MEASUREMENT_ID } from "@/constants";
 import "./globals.css";
 
 // Self-hosted variable fonts (no runtime request to Google Fonts).
@@ -27,6 +28,8 @@ export const metadata: Metadata = {
   },
   description:
     "Ubah foto jadi karakter anime atau pasfoto studio profesional untuk lamaran kerja. Latar merah/biru, ukuran 2×3, 3×4, 4×6.",
+  // Lets AdSense verify site ownership during review.
+  ...(ADSENSE_CLIENT ? { other: { "google-adsense-account": ADSENSE_CLIENT } } : {}),
 };
 
 export const viewport: Viewport = {
@@ -40,6 +43,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <MainTemplate>{children}</MainTemplate>
       </body>
       {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
+      {ADSENSE_CLIENT && (
+        <Script
+          id="adsense"
+          async
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+        />
+      )}
     </html>
   );
 }

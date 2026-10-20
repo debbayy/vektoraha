@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { AdSlot } from "@/components/atoms";
 import { PasfotoEditor } from "@/components/organisms";
 import { EditorTemplate } from "@/components/templates";
+import { AD_SLOTS } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Pasfoto Studio",
@@ -15,6 +17,7 @@ export default function PasfotoPage() {
       description="Baju formal, cahaya studio, latar polos, dan ukuran resmi siap cetak — langsung dari foto biasa."
     >
       <PasfotoEditor />
+      <AdSlot slot={AD_SLOTS.editor} className="mt-12" />
     </EditorTemplate>
   );
 }

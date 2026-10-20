@@ -6,3 +6,4 @@ export { Label } from "./Label";
 export { Logo } from "./Logo";
 export { Skeleton } from "./Skeleton";
 export { Spinner } from "./Spinner";
+export { AdSlot } from "./AdSlot";

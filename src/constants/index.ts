@@ -5,6 +5,18 @@ export const APP_NAME = "VektorAha";
 /** GA4 measurement ID (public by design). Override with NEXT_PUBLIC_GA_ID. */
 export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-HYTSFKQQBM";
 
+/** AdSense publisher ID, e.g. "ca-pub-1234567890123456". Ads stay off until this is set. */
+export const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT?.trim() || "";
+
+/** Ad unit IDs per placement (from AdSense → Ads → By ad unit). Empty = slot hidden. */
+export const AD_SLOTS = {
+  home: process.env.NEXT_PUBLIC_ADSENSE_SLOT_HOME?.trim() || "",
+  editor: process.env.NEXT_PUBLIC_ADSENSE_SLOT_EDITOR?.trim() || "",
+} as const;
+
+/** Public contact email shown on the privacy page (optional). */
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "";
+
 export const NAV_LINKS = [
   { href: "/", label: "Beranda" },
   { href: "/anime", label: "Gaya Anime" },

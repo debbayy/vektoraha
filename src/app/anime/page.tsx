@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { AdSlot } from "@/components/atoms";
 import { AnimeEditor } from "@/components/organisms";
 import { EditorTemplate } from "@/components/templates";
+import { AD_SLOTS } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Gaya Anime",
@@ -15,6 +17,7 @@ export default function AnimePage() {
       description="Unggah fotomu, pilih gaya, dan biarkan AI menggambar ulang dirimu — wajah, rambut, dan ekspresi tetap dikenali."
     >
       <AnimeEditor />
+      <AdSlot slot={AD_SLOTS.editor} className="mt-12" />
     </EditorTemplate>
   );
 }

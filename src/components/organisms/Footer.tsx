@@ -18,6 +18,9 @@ export function Footer() {
               {l.label}
             </Link>
           ))}
+          <Link href="/kebijakan-privasi" className="text-sm font-semibold text-ink-soft hover:text-ink">
+            Kebijakan Privasi
+          </Link>
         </nav>
       </Container>
       <Container className="border-t border-line py-5 text-xs text-ink-muted">
