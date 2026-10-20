@@ -59,7 +59,8 @@ src/
 2. Create `.env.local` in the project root (see [Environment Variables](#environment-variables)):
 
    ```bash
-   GEMINI_API_KEY=your-key
+   CLOUDFLARE_ACCOUNT_ID=your-account-id
+   CLOUDFLARE_API_TOKEN=your-token
    ```
 
 3. Start the dev server and open <http://localhost:3000>:
@@ -81,7 +82,10 @@ src/
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `AI_PROVIDER` | No | AI provider to use (`gemini` or `openai`) |
+| `AI_PROVIDER` | No | `cloudflare`, `gemini`, or `openai`. Auto-detected from available keys when empty |
+| `CLOUDFLARE_ACCOUNT_ID` | If using Cloudflare | Cloudflare account ID (free tier: 10,000 neurons/day) |
+| `CLOUDFLARE_API_TOKEN` | If using Cloudflare | API token created from the "Workers AI" template |
+| `CLOUDFLARE_IMAGE_MODEL` | No | Defaults to `@cf/black-forest-labs/flux-2-klein-4b` |
 | `GEMINI_API_KEY` | If using Gemini | Google Gemini API key |
 | `GEMINI_IMAGE_MODEL` | No | Override the Gemini image model |
 | `OPENAI_API_KEY` | If using OpenAI | OpenAI API key (also set `AI_PROVIDER=openai`) |
@@ -91,7 +95,7 @@ AI prompts live on the server (`src/lib/ai/prompts.ts`), so the client only send
 
 ## Deploy to Vercel
 
-Import the repo in Vercel, add the `GEMINI_API_KEY` env variable (and `AI_PROVIDER` if needed), then deploy.
+Import the repo in Vercel, add `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` (free), or a Gemini/OpenAI key, then deploy.
 
 ## Disclaimer
 
