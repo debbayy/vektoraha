@@ -2,23 +2,26 @@ import "server-only";
 import { BACKGROUND_COLORS, OUTFITS } from "@/constants";
 import type { AnimeStyleId, OutfitId } from "@/types";
 
+// Style prompts describe ONLY the rendering technique (line, colour, shading, background).
+// They never name objects: image models tend to draw whatever item a prompt mentions,
+// even inside "do not add X", so props like eyewear or headbands are never written here.
 const ANIME_PROMPTS: Record<AnimeStyleId, string> = {
   "ninja-shonen":
-    "Redraw this photo as a 2000s ninja shonen anime character: bold clean black lineart, flat cel shading with two tones, vibrant orange, navy and teal palette, expressive large eyes, dynamic spiky stylised hair, a forehead-protector style headband is optional, simple village or forest background.",
+    "Redraw this photo in a 2000s ninja shonen anime style: bold clean black lineart, flat two-tone cel shading, vibrant orange, navy and teal colour palette, expressive anime eyes, simple painted village or forest background.",
   "watercolor-studio":
-    "Redraw this photo as a hand-painted Japanese animated film still: soft watercolour and gouache textures, warm pastel palette, gentle natural lighting, rounded friendly facial features, lush painted countryside or cosy town background with fluffy clouds.",
+    "Redraw this photo in the style of a hand-painted Japanese animated film still: soft watercolour and gouache textures, warm pastel palette, gentle natural lighting, rounded friendly features, painted countryside background with fluffy clouds.",
   "saiyan-action":
-    "Redraw this photo as a 1990s action shonen anime character: sharp angular jaw and eyes, thick confident outlines, high-contrast cel shading, muscular heroic pose, golden energy aura with crackling sparks, rocky battlefield background.",
+    "Redraw this photo in a 1990s action shonen anime style: sharp angular features, thick confident outlines, high-contrast cel shading, dramatic lighting, rocky landscape background.",
   "shoujo-sparkle":
-    "Redraw this photo as a romantic shoujo anime character: large sparkling eyes with highlights, delicate fine lineart, soft pink and lavender palette, flowing hair, floating flower petals and bokeh sparkles in the background.",
+    "Redraw this photo in a romantic shoujo anime style: large sparkling eyes with highlights, delicate fine lineart, soft pink and lavender palette, soft bokeh background.",
   "cyber-anime":
-    "Redraw this photo as a cyberpunk anime character: sleek detailed lineart, neon magenta and cyan rim lighting, futuristic city at night with glowing signs, rain reflections, cinematic composition.",
+    "Redraw this photo in a cyberpunk anime style: sleek detailed lineart, neon magenta and cyan rim lighting, futuristic night city background with rain reflections.",
   chibi:
-    "Redraw this photo as a cute chibi anime figure: oversized head, tiny body, big round shiny eyes, simple soft shading, pastel background with small decorative stars.",
+    "Redraw this photo as a cute chibi anime figure: oversized head, small body, big round shiny eyes, simple soft shading, plain pastel background.",
 };
 
 const SHARED_ANIME_RULES =
-  "Keep the same person recognisable: same hairstyle direction, hair colour, skin tone, facial expression, glasses and accessories. Keep the original pose and framing. Output a single finished illustration with no text, captions, watermarks or speech bubbles. Do not copy any existing named character.";
+  "Only change the art style. Keep everything about the person exactly as it is in the photo: the same face, the same hairstyle and hair colour, the same skin tone, the same expression, the same clothing, and only the items that are actually visible in the photo. The person's face and head must look exactly as bare or as covered as in the original. Same pose and framing. A single finished illustration, no text, no watermark.";
 
 export function buildAnimePrompt(styleId: AnimeStyleId) {
   return `${ANIME_PROMPTS[styleId]} ${SHARED_ANIME_RULES}`;
@@ -37,7 +40,7 @@ export function buildPasfotoPrompt(outfitId: OutfitId, backgroundId: string) {
   const outfit = OUTFITS.find((o) => o.id === outfitId) ?? OUTFITS[0];
   return [
     "Turn this into a professional studio ID / job-application portrait photo.",
-    "The person must stay exactly the same person: identical face shape, features, skin tone, age, hairstyle and any religious head covering. Do not beautify or change identity.",
+    "The person must stay exactly the same person: identical face shape, features, skin tone, age and hairstyle, with the head and face exactly as bare or as covered as in the original photo. Only items already visible in the photo may appear. Do not beautify or change identity.",
     "Front-facing, looking straight at the camera, head and shoulders centred, neutral friendly expression with mouth closed, eyes open.",
     `${OUTFIT_PROMPTS[outfit.id]}`,
     `Soft even studio lighting with no harsh shadows. Plain solid flat background in colour ${bg.hex} (${bg.label}), no gradient, no props.`,
