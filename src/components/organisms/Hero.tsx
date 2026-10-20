@@ -31,23 +31,22 @@ export function Hero() {
           <p className="text-sm text-ink-muted">Tanpa daftar akun · Foto diproses lalu tidak disimpan</p>
         </div>
 
-        <div className="relative mx-auto h-[340px] w-full max-w-md sm:h-[420px]" aria-hidden>
+        <div className="relative mx-auto h-[330px] w-full max-w-sm sm:h-[400px] sm:max-w-md" aria-hidden>
           {tiles.map((s, i) => (
             <div
               key={s.id}
               className={cn(
-                "absolute w-[58%] rounded-3xl border-2 border-ink bg-card p-2.5 shadow-[6px_6px_0_0_var(--color-ink)]",
+                "absolute w-[54%] rounded-3xl border-2 border-ink bg-card p-2.5 shadow-[6px_6px_0_0_var(--color-ink)]",
                 i === 0 && "left-0 top-6 -rotate-6",
                 i === 1 && "right-0 top-0 rotate-6",
                 i === 2 && "bottom-0 left-1/2 z-10 -translate-x-1/2 rotate-1",
               )}
             >
-              <div className={cn("grid aspect-[4/5] place-items-center rounded-2xl bg-gradient-to-br", s.gradient)}>
-                <span className="text-6xl">{s.emoji}</span>
-              </div>
-              <div className="flex items-center justify-between px-1.5 pt-2.5 pb-1">
-                <span className="font-display text-sm font-bold">{s.name}</span>
-                <span className="size-2.5 rounded-full bg-accent" />
+              <div className={cn("relative grid aspect-[4/5] place-items-center rounded-2xl bg-gradient-to-br", s.gradient)}>
+                <span className="absolute left-2.5 top-2.5 max-w-[calc(100%-1.25rem)] truncate rounded-full bg-card/90 px-2.5 py-1 font-display text-[11px] font-bold text-ink shadow-sm sm:text-xs">
+                  {s.name}
+                </span>
+                <span className="text-5xl sm:text-6xl">{s.emoji}</span>
               </div>
             </div>
           ))}

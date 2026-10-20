@@ -15,7 +15,7 @@ export function LandingSkeleton() {
             <Skeleton className="h-14 w-full sm:w-48" rounded="full" />
           </div>
         </div>
-        <Skeleton className="mx-auto h-[340px] w-full max-w-md sm:h-[420px]" rounded="xl" />
+        <Skeleton className="mx-auto h-[330px] w-full max-w-sm sm:h-[400px] sm:max-w-md" rounded="xl" />
       </Container>
       <Container className="grid gap-6 py-16 md:grid-cols-2">
         <Skeleton className="h-72" rounded="xl" />

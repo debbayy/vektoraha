@@ -19,11 +19,14 @@ export function StyleShowcase() {
             Mulai sekarang
           </ButtonLink>
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+        <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
           {ANIME_STYLES.map((s) => (
-            <StyleCard key={s.id} style={s} />
+            <div key={s.id} className="w-[78%] shrink-0 snap-start sm:w-auto">
+              <StyleCard style={s} />
+            </div>
           ))}
         </div>
+        <p className="mt-3 text-center text-xs text-white/50 sm:hidden">Geser untuk melihat gaya lainnya →</p>
       </Container>
     </section>
   );

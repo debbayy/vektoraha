@@ -15,7 +15,7 @@ export function StyleCard({ style, selected, onSelect, compact }: StyleCardProps
     <Tag
       {...(onSelect ? { type: "button" as const, onClick: onSelect, "aria-pressed": selected } : {})}
       className={cn(
-        "group relative flex w-full flex-col overflow-hidden rounded-2xl border-2 bg-card text-left transition-all",
+        "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border-2 bg-card text-left transition-all",
         selected ? "border-ink shadow-[4px_4px_0_0_var(--color-ink)]" : "border-line",
         onSelect && !selected && "hover:-translate-y-0.5 hover:border-ink/40",
       )}
